@@ -391,7 +391,7 @@ class TestSwaggerExposer < Minitest::Test
 
         def self.endpoint_parameter(name, description, how_to_pass, required, type, params = {})
           @@cal_counter+=1
-          name.must_match /pl.p/
+          name.must_match(/pl.p/)
           description.must_equal 'description'
           how_to_pass.must_equal :body
           required.must_equal true
