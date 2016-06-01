@@ -57,17 +57,21 @@ module Sinatra
         # @param block the block containing the route content
         def run(app, block_params, &block)
           parsed_body = {}
+
           if JSON_CONTENT_TYPE.like?(app.env['CONTENT_TYPE'])
             body = app.request.body.read
+
             unless body.empty?
               begin
-                parsed_body = JSON.parse(body)
-              rescue JSON::ParserError => e
+                parsed_body = ::JSON.parse(body)
+              rescue ::JSON::ParserError => e
                 return [400, {:code => 400, :message => e.message}.to_json]
               end
             end
           end
+
           app.params['parsed_body'] = parsed_body
+
           unless @processors_dispatchers.empty?
             @processors_dispatchers.each do |processor_dispatcher|
               begin
@@ -78,6 +82,7 @@ module Sinatra
               end
             end
           end
+
           if block
             # Execute the block in the context of the app
             app.instance_exec(*block_params, &block)

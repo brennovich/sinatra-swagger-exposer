@@ -116,7 +116,7 @@ class TestSwaggerRequestProcessor < Minitest::Test
       processor_dispatcher = FakeProcessorDispatcher.new(nil)
       app = FakeRequestProcessorApp.new({'CONTENT_TYPE' => 'application/json'}, '{"plip: "plop"}')
       result = new_rp(processor_dispatcher).run(app, [])
-      result.must_equal [400, {"code": 400, "message": "757: unexpected token at '{\"plip: \"plop\"}'"}.to_json]
+      result.must_equal [400, {"code": 400, "message": "784: unexpected token at '{\"plip: \"plop\"}'"}.to_json]
     end
 
     it 'should fail with an unknown content type' do

@@ -1,14 +1,10 @@
 require_relative '../swagger-parameter-helper'
 
 module Sinatra
-
   module SwaggerExposer
-
     module Processing
-
       # Process a response
       class SwaggerResponseProcessor
-
         include Sinatra::SwaggerExposer::SwaggerParameterHelper
 
         attr_reader :endpoint_response, :processor
@@ -31,16 +27,15 @@ module Sinatra
         # @param response_body [String] the body
         def validate_response(response_body)
           parsed_response_body = nil
-          begin
-            parsed_response_body = JSON.parse(response_body)
-          rescue JSON::ParserError => e
-            raise SwaggerInvalidException.new("Response is not a valid json [#{response_body}]")
-          end
-          if @processor
-            @processor.validate_value(parsed_response_body)
-          end
-        end
 
+          begin
+            parsed_response_body = ::JSON.parse(response_body)
+          rescue ::JSON::ParserError
+            raise SwaggerInvalidException, "Response is not a valid json [#{response_body}]"
+          end
+
+          @processor.validate_value(parsed_response_body) if @processor
+        end
       end
     end
   end
